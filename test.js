@@ -41,13 +41,13 @@ var opts = {
       fontSize: {
         base: 14,
         max: 48,
-        precision: null,
+        precision: 0.01,
         unit: 'px',
       },
       lineHeight: {
         base: 1.45,
         max: 1.23,
-        precision: null,
+        precision: 0.01,
         unit: null,
       }
     },
@@ -56,13 +56,13 @@ var opts = {
       fontSize: {
         base: 14,
         max: 48,
-        precision: null,
+        precision: 0.01,
         unit: 'px',
       },
       lineHeight: {
         base: 1.45,
         max: 1.23,
-        precision: null,
+        precision: 0.01,
         unit: null,
       }
     }
@@ -71,6 +71,9 @@ var opts = {
   
 };
 
+
+var round = require('./src/round.js')
+console.log(round(2.33, 0.5));
 
 var Scale = require('./src/Scale.js')
 var scale = Scale(_.extend({}, opts.environments.phone.lineHeight, opts.sizes));
@@ -88,3 +91,5 @@ var typography = Typography(opts);
 
 console.log(JSON.stringify(typography, null, 4));
 
+var round = require('./src/round.js')
+console.log(round(2.33, 0.1));
