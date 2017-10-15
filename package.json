@@ -1,0 +1,14 @@
+{
+  "name": "type-director",
+  "version": "0.0.1",
+  "description": "Type Director generates a responsive, modular, nuanced typographic system from only a few key variables.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "underscore": "^1.8.3"
+  }
+}
