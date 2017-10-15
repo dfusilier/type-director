@@ -7,7 +7,7 @@ function round (val, precision) {
 
   // floating point does weird stuff in js. fixed like so:
   var decimalPlaces = precision.toString().split('.')[1].length;
-  result = result.toPrecision(decimalPlaces + 1);
+  result = result.toFixed(decimalPlaces);
 
   return result;
 }

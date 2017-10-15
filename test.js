@@ -93,3 +93,4 @@ console.log(JSON.stringify(typography, null, 4));
 
 var round = require('./src/round.js')
 console.log(round(2.33, 0.1));
+console.log(round(23.3, 0.1));
