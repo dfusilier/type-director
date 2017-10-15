@@ -18,7 +18,7 @@ function Typography(opts) {
     environment.sizes = {};
 
     var typeScales = _.mapObject(typefaces, function (val, key) {
-      var adustedOpts = makeFontAdjustments(_.extend({}, val, environment, opts.sizes));
+      var adustedOpts = makeFontAdjustments(_.extend({}, val, environment, { sizes: typography.sizes }));
       return TypeScale(adustedOpts);
     }); 
 

@@ -31,7 +31,7 @@ var opts = {
   },
 
   sizes: {
-    smallerSizes: 1,
+    smallerSizes: 2,
     largerSizes: 5
   },
 
