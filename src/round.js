@@ -2,7 +2,7 @@ exports = module.exports = round;
 
 var _ = require('underscore');
 
-function round (val, precision) {
+function round(val, precision) {
   var result = Math.round(val / precision) * precision;
 
   // floating point does weird stuff in js. fixed like so:

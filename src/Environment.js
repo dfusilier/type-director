@@ -1,68 +1,33 @@
 exports = module.exports = Environment;
 
 var _ = require('underscore');
+var calcRatio = require('./calcRatio.js');
 
-function Environment(props) {
+function Environment(opts, largerSizes) {
 
-  var props = _.defaults(props, {
-    mediaQuery: null,
+  var environment = _.extend({
+    name: 'new',
+    mediaQuery: '',
     fontSize: {
       base: 14,
-      max: 48,
-      precision: null,
+      max: 36,
+      precision: 0.01,
       unit: 'px',
-      ratio:
     },
     lineHeight: {
       base: 1.45,
-      max: 1.25,
-      precision: null,
+      max: 1.23,
+      precision: 0.01,
       unit: null,
     }
-  });
+  }, opts);
 
 
-  var calculateRatio = function () {
-    var ratio = Math.pow(opts.max / opts.base,  1 / opts.largerSizes);
-  }
+  // Calculate fontSize and lineHeight ratios 
+  // used to produce metrics for each size.
+  environment.fontSize.ratio = calcRatio(environment.fontSize.base, environment.fontSize.max, largerSizes)
+  environment.lineHeight.ratio = calcRatio(environment.lineHeight.base, environment.lineHeight.max, largerSizes)
 
-  return _.extend({
-    mediaQuery: null,
-    fontSize: {
-      base: 14,
-      max: 48,
-      precision: null,
-      unit: 'px',
-      ratio:
-    },
-    lineHeight: {
-      base: 1.45,
-      max: 1.25,
-      precision: null,
-      unit: null,
-    }
-  }, props);
+  return environment;
 }
 
-
-
-function Scale(opts) {
-
-  var opts = _.defaults(opts, {
-    base: 12,
-    max: 48, 
-    unit: "px", 
-    smallerSizes: 1, 
-    largerSizes: 5
-  });
-
-  // The ratio we'll use to calculate the values.
-  var ratio = Math.pow(opts.max / opts.base,  1 / opts.largerSizes);
-  var values = {};
-
-  for (var i = -opts.smallerSizes; i <= opts.largerSizes; i++) {
-    values[i] = opts.base * Math.pow(ratio, i);
-  }
-
-  return values;
-}

@@ -3,8 +3,9 @@ var _ = require('underscore');
 
 var opts = {
 
-  typefaces: {
-    georgia: {
+  typefaces: [
+    {
+      name: 'georgia',
       fontFamily: 'Georgia',
       fontFamilyFallbacks: [],
       fontFamilyGeneric: 'serif',
@@ -12,7 +13,8 @@ var opts = {
       lineHeightAdjustment: 1.00,
       uppercaseAdjustment: 0.82
     },
-    verdana: {
+    {
+      name: 'verdana',
       fontFamily: 'Verdana',
       fontFamilyFallbacks: [],
       fontFamilyGeneric: 'sans-serif',
@@ -20,7 +22,8 @@ var opts = {
       lineHeightAdjustment: 0.94,
       uppercaseAdjustment: 0.85
     },
-    menlo: {
+    {
+      name: 'menlo',
       fontFamily: 'Menlo',
       fontFamilyFallbacks: ['Consolas'],
       fontFamilyGeneric: 'monospace',
@@ -28,19 +31,20 @@ var opts = {
       lineHeightAdjustment: 1.00,
       uppercaseAdjustment: 0.85
     }
-  },
+  ],
 
   sizes: {
     smallerSizes: 2,
     largerSizes: 5
   },
 
-  environments: {
-    phone: {
-      mediaQuery: null,
+  environments: [{},
+    {
+      name: 'phone',
+      mediaQuery: '',
       fontSize: {
         base: 14,
-        max: 48,
+        max: 36,
         precision: 0.01,
         unit: 'px',
       },
@@ -51,8 +55,9 @@ var opts = {
         unit: null,
       }
     },
-    tablet: {
-      mediaQuery: null,
+    {
+      name: 'tablet',
+      mediaQuery: '@media (min-width: 768px)',
       fontSize: {
         base: 14,
         max: 48,
@@ -66,31 +71,12 @@ var opts = {
         unit: null,
       }
     }
-  },
-
-  
+  ]  
 };
-
-
-var round = require('./src/round.js')
-console.log(round(2.33, 0.5));
-
-var Scale = require('./src/Scale.js')
-var scale = Scale(_.extend({}, opts.environments.phone.lineHeight, opts.sizes));
-
-var TypeScale = require('./src/TypeScale.js')
-var typeScale = TypeScale(_.extend({}, opts.environments.phone, opts.sizes));
-
-var makeFontAdjustments = require('./src/makeFontAdjustments.js')
-var adjustedOpts = makeFontAdjustments(_.extend({}, opts.typefaces.verdana, opts.environments.phone, opts.sizes));
-var adjustedTypeScale = TypeScale(adjustedOpts);
 
 var Typography = require('./index.js')
 var typography = Typography(opts);
 
-
+// Pretty format json
 console.log(JSON.stringify(typography, null, 4));
 
-var round = require('./src/round.js')
-console.log(round(2.33, 0.1));
-console.log(round(23.3, 0.1));

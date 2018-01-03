@@ -2,22 +2,17 @@ exports = module.exports = Typeface;
 
 var _ = require('underscore');
 
-function Typeface(props) {
-  return _.extend({
-    fontFamily: 'Times',
+function Typeface(opts) {
+
+  opts = _.extend({
+    name: "new",
+    fontFamily: "Times",
     fontFamilyFallbacks: [],
     fontFamilyGeneric: 'serif',
     fontSizeAdjustment: 1.00,
     lineHeightAdjustment: 1.00,
-    uppercaseAdjustment: 0.85
-  }, props);
+    uppercaseAdjustment: 0.8
+  }, opts);
+
+  return opts;
 }
-
-/* Generic family names */
-// font-family: serif;
-// font-family: sans-serif;
-// font-family: monospace;
-// font-family: cursive;
-// font-family: fantasy;
-// font-family: system-ui;
-
