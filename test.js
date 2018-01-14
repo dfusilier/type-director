@@ -86,7 +86,7 @@ console.log(JSON.stringify(typography, null, 4));
 // const output = theo.convert({
 //   transform: {
 //     type: 'web',
-//     file: 'fake-file.json',
+//     file: 'package.json',
 //     data: JSON.stringify(typography.tokens)
 //   },
 //   format: {

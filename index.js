@@ -109,7 +109,6 @@ function Typography(opts) {
     _.each(sizes, function (size) {
       
         const metrics = TypeMetrics(environment, typeface, size)
-        // const sizeString = size < 0 ? 'minus' + (-size) : size
         const prefix = String('TYPE_SIZE_' + size + '_' + typeface.name + '_'  + environment.name + '_').toUpperCase()
 
         tokens.props[prefix + 'FONT_SIZE'] = fontSizeToken(metrics.fontSize)
@@ -126,7 +125,6 @@ function Typography(opts) {
     sizes: sizes,
     metrics: metrics,
     tokens: tokens
-  };
-
+  }
 }
 
