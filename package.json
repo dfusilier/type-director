@@ -8,7 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "underscore": "^1.8.3"
+  "devDependencies": {},
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "theo": "^6.0.0-beta.9"
   }
 }

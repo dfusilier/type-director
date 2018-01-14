@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var theo = require('theo');
 
 
 var opts = {
@@ -8,7 +7,7 @@ var opts = {
     {
       name: 'georgia',
       fontFamily: 'Georgia',
-      fontFamilyFallbacks: ['Times', 'Times New Roman'], 
+      fontFamilyFallbacks: [],
       fontFamilyGeneric: 'serif',
       fontSizeAdjustment: 1.00,
       lineHeightAdjustment: 1.00,
@@ -35,8 +34,8 @@ var opts = {
   ],
 
   sizes: {
-    smallerSizes: 1,
-    largerSizes: 3
+    smallerSizes: 2,
+    largerSizes: 5
   },
 
   environments: [{},
@@ -81,17 +80,3 @@ var typography = Typography(opts);
 // Pretty format json
 console.log(JSON.stringify(typography, null, 4));
 
-
-
-// const output = theo.convert({
-//   transform: {
-//     type: 'web',
-//     file: 'fake-file.json',
-//     data: JSON.stringify(typography.tokens)
-//   },
-//   format: {
-//     type: 'scss'
-//   }
-// });
-
-// console.log(output);

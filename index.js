@@ -1,6 +1,7 @@
 exports = module.exports = Typography;
 
 var _ = require('underscore');
+var TypeMetrics = require('./src/TypeMetrics.js');
 
 var Typeface = require('./src/Typeface.js');
 var Environment = require('./src/Environment.js');
@@ -19,6 +20,9 @@ function Typography(opts) {
   var metrics = {
     flat: [],
     nested: {}
+  }
+  var tokens = {
+    props: {}
   }
 
   environments = _.map(opts.environments, function (environment) {
@@ -62,16 +66,66 @@ function Typography(opts) {
       metrics.nested[environment.name][size] = {};
 
       _.each(typefaces, function (typeface) {
+
         metrics.nested[environment.name][size][typeface.name] = TypeMetrics(environment, typeface, size)
       });
     });
   });
 
+
+  // Tokens
+
+  const fontSizeToken = (value) => {
+    return {
+      "value": value,
+      "type": "size",
+      "category": "font-size"
+    }
+  }
+
+  const lineHeightToken = (value) => {
+    return {
+      "value": value,
+      "type": "size",
+      "category": "line-height"
+    }
+  }
+
+
+
+  // Create Theo design tokens
+  _.each(typefaces, function (typeface) {
+
+    let fontStack = []
+    fontStack.push(typeface.fontFamily)
+    fontStack = fontStack.concat(typeface.fontFamilyFallbacks) 
+    fontStack.push(typeface.fontFamilyGeneric)
+
+    tokens.props['TYPEFACE_' + typeface.name.toUpperCase()] = {
+      value: String(fontStack)
+    }
+
+    _.each(environments, function (environment) {
+    _.each(sizes, function (size) {
+      
+        const metrics = TypeMetrics(environment, typeface, size)
+        // const sizeString = size < 0 ? 'minus' + (-size) : size
+        const prefix = String('TYPE_SIZE_' + size + '_' + typeface.name + '_'  + environment.name + '_').toUpperCase()
+
+        tokens.props[prefix + 'FONT_SIZE'] = fontSizeToken(metrics.fontSize)
+        tokens.props[prefix + 'LINE_HEIGHT'] = lineHeightToken(metrics.lineHeight)
+        tokens.props[prefix + 'LINE_HEIGHT_TIGHT'] = lineHeightToken(metrics.lineHeightTight)
+
+      })
+    })
+  })
+
   return {
     typefaces: opts.typefaces,
     environments: environments,
     sizes: sizes,
-    metrics: metrics
+    metrics: metrics,
+    tokens: tokens
   };
 
 }
