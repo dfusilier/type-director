@@ -26,7 +26,7 @@ function Typography(opts) {
   }
 
   environments = _.map(opts.environments, function (environment) {
-    return Environment(environment, opts.sizes.largerSizes);
+    return Environment(environment, opts.sizes.larger);
   });
 
   typefaces = _.map(opts.typefaces, function (typeface) {
