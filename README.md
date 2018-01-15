@@ -30,7 +30,7 @@ const typefaces = [
   {
     name: 'default',
     fontFamily: 'Georgia',
-    fontFamilyFallbacks': ['Times', 'Times New Roman'],
+    fontFamilyFallbacks: ['Times', 'Times New Roman'],
     fontFamilyGeneric: 'serif',
     fontSizeAdjustment': 1.00,
     lineHeightAdjustment': 1.00
@@ -74,13 +74,13 @@ const environments = [
     name: 'phone',
     fontSize: {
       base: 16,
-      max': 28,
+      max: 28,
       unit: 'px',
       precision: 0.1
     },
     lineHeight: {
       base: 1.45,
-      max': 1.35,
+      max: 1.35,
       unit: '',
       precision: 0.1
     }
@@ -90,13 +90,13 @@ const environments = [
     mediaQuery: 'screen and (min-width: 768px)',
     fontSize: {
       base: 18,
-      max': 42,
+      max: 42,
       unit: 'px',
       precision: 0.1
     },
     lineHeight: {
       base: 1.4,
-      max': 1.25,
+      max: 1.25,
       unit: '',
       precision: 0.01
     }
