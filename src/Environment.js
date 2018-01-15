@@ -9,16 +9,16 @@ function Environment(opts, largerSizes) {
     name: 'new',
     mediaQuery: '',
     fontSize: {
-      base: 14,
-      max: 36,
-      precision: 0.01,
+      base: 16,
+      max: 48,
+      precision: 0.1,
       unit: 'px',
     },
     lineHeight: {
       base: 1.45,
-      max: 1.23,
+      max: 1.25,
       precision: 0.01,
-      unit: null,
+      unit: '',
     }
   }, opts);
 
