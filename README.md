@@ -23,7 +23,7 @@ Type Director generates a responsive, modular, nuanced typographic system from o
 
 ### Declare your typefaces
 
-Typefaces associate a font-family with various typeface-specific adjustments. Specify your typefaces in the options object like so:
+Typefaces associate a font-family with various typeface-specific adjustments. Specify your typefaces like so:
 
 ```js
 const typefaces = [
@@ -65,11 +65,11 @@ Similarly, you can also apply an adjustment to line-height on a typeface-by-type
 
 ### Declare your environments
 
-Environments associate a media query with a modular type scale. Specify your environments in the options object like so:
+Environments associate a media query with a modular type scale. Specify your environments like so:
 
 ```js
 
-const environments = [ 
+const scales = [ 
   {
     name: 'phone',
     fontSize: {
@@ -103,7 +103,7 @@ const environments = [
   }
 ]
 ```
-For each environment, you'll need to specify font-size and line-height for both your base and max size. The type scale for each environment will be interpolated from these constraints.
+For each scale, you'll need to provide a font size and line height for both your base size and max size. The other sizes will be interpolated from these constraints.
 
 A `mediaQuery` property should also be set for each environment, except for the environment you'd like to be default.
 
