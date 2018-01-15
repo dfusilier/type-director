@@ -35,8 +35,8 @@ var opts = {
   ],
 
   sizes: {
-    smallerSizes: 1,
-    largerSizes: 3
+    smaller: 1,
+    larger: 3
   },
 
   environments: [{},

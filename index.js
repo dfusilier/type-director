@@ -34,7 +34,7 @@ function Typography(opts) {
   });
 
   // Create an array containing each size.
-  for (var i = -opts.sizes.smallerSizes; i <= opts.sizes.largerSizes; i++) {
+  for (var i = -opts.sizes.smaller; i <= opts.sizes.larger; i++) {
     sizes.push(i)
   }
   console.log()
