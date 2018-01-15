@@ -39,7 +39,7 @@ var opts = {
     larger: 3
   },
 
-  environments: [{},
+  scales: [{},
     {
       name: 'phone',
       mediaQuery: '',

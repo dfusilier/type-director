@@ -1,57 +1,52 @@
 exports = module.exports = Typography;
 
 var _ = require('underscore');
-var TypeMetrics = require('./src/TypeMetrics.js');
+var changeCase = require('change-case');
 
 var Typeface = require('./src/Typeface.js');
-var Environment = require('./src/Environment.js');
-var TypeMetrics = require('./src/TypeMetrics.js');
-
+var Scale = require('./src/Scale.js');
+var Sizes = require('./src/Sizes.js');
+var Metrics = require('./src/Metrics.js');
 
 
 function Typography(opts) {
 
-  opts = _.extend({}, opts);
-
   var typefaces = opts.typefaces;
-  var environments = [];
-  var sizes = [];
   var scales = [];
+  var sizes = [];
   var metrics = {
     flat: [],
-    nested: {}
-  }
-  var tokens = {
-    props: {}
-  }
+    nested: {},
+    tokens: { props: {} }
+  };
 
-  environments = _.map(opts.environments, function (environment) {
-    return Environment(environment, opts.sizes.larger);
+  // Apply defaults, calculate ratio or max
+  scales = _.map(opts.scales, function (scale) {
+    return Scale(scale, opts.sizes.larger);
   });
 
+  // Apply defaults
   typefaces = _.map(opts.typefaces, function (typeface) {
     return Typeface(typeface);
   });
 
-  // Create an array containing each size.
-  for (var i = -opts.sizes.smaller; i <= opts.sizes.larger; i++) {
-    sizes.push(i)
-  }
-  console.log()
+  // Create array of sizes
+  sizes = Sizes(opts.sizes)
 
-  // Create metrics for each environment, 
+
+  // Create metrics for each scale, 
   // size, and typeface combo.
 
   // Flatted array
-  _.each(environments, function (environment) {
+  _.each(scales, function (scale) {
     _.each(sizes, function (size) {
       _.each(typefaces, function (typeface) {
 
         metrics.flat.push({
-          environment: environment.name,
+          scale: scale.name,
           typeface: typeface.name,
           size: size,
-          values: TypeMetrics(environment, typeface, size)
+          values: Metrics(scale, typeface, size)
         });
 
       });
@@ -59,23 +54,23 @@ function Typography(opts) {
   });
 
   // Nested object
-  _.each(environments, function (environment) {
-    metrics.nested[environment.name] = {};
+  _.each(scales, function (scale) {
+    metrics.nested[scale.name] = {};
 
     _.each(sizes, function (size) {
-      metrics.nested[environment.name][size] = {};
+      metrics.nested[scale.name][size] = {};
 
       _.each(typefaces, function (typeface) {
 
-        metrics.nested[environment.name][size][typeface.name] = TypeMetrics(environment, typeface, size)
+        metrics.nested[scale.name][size][typeface.name] = Metrics(scale, typeface, size)
       });
     });
   });
 
 
-  // Tokens
+  // Theo Design Tokens
 
-  const fontSizeToken = (value) => {
+  var fontSizeToken = (value) => {
     return {
       "value": value,
       "type": "size",
@@ -83,7 +78,7 @@ function Typography(opts) {
     }
   }
 
-  const lineHeightToken = (value) => {
+  var lineHeightToken = (value) => {
     return {
       "value": value,
       "type": "size",
@@ -91,40 +86,36 @@ function Typography(opts) {
     }
   }
 
-
-
-  // Create Theo design tokens
   _.each(typefaces, function (typeface) {
 
-    let fontStack = []
+    var fontStack = []
     fontStack.push(typeface.fontFamily)
     fontStack = fontStack.concat(typeface.fontFamilyFallbacks) 
     fontStack.push(typeface.fontFamilyGeneric)
 
-    tokens.props['TYPEFACE_' + typeface.name.toUpperCase()] = {
+
+    metrics.tokens.props[changeCase.constantCase('typeface ' + typeface.name)] = {
       value: String(fontStack)
     }
 
-    _.each(environments, function (environment) {
+    _.each(scales, function (scale) {
     _.each(sizes, function (size) {
       
-        const metrics = TypeMetrics(environment, typeface, size)
-        const prefix = String('TYPE_SIZE_' + size + '_' + typeface.name + '_'  + environment.name + '_').toUpperCase()
+        var theseMetrics = Metrics(scale, typeface, size)
+        var prefix = changeCase.constantCase('type size') + '_' + size + '_' + changeCase.constantCase(typeface.name + ' '  + scale.name)
 
-        tokens.props[prefix + 'FONT_SIZE'] = fontSizeToken(metrics.fontSize)
-        tokens.props[prefix + 'LINE_HEIGHT'] = lineHeightToken(metrics.lineHeight)
-        tokens.props[prefix + 'LINE_HEIGHT_TIGHT'] = lineHeightToken(metrics.lineHeightTight)
-
+        metrics.tokens.props[prefix + '_FONT_SIZE'] = fontSizeToken(theseMetrics.fontSize)
+        metrics.tokens.props[prefix + '_LINE_HEIGHT'] = lineHeightToken(theseMetrics.lineHeight)
+        metrics.tokens.props[prefix + '_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.lineHeightTight)
       })
     })
   })
 
   return {
     typefaces: opts.typefaces,
-    environments: environments,
+    scales: scales,
     sizes: sizes,
-    metrics: metrics,
-    tokens: tokens
+    metrics: metrics
   }
 }
 

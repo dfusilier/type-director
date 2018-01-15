@@ -1,0 +1,22 @@
+exports = module.exports = Sizes;
+
+var _ = require('underscore');
+
+
+
+function Sizes(opts) {
+
+  opts = _.extend({
+    smaller: 1,
+    larger: 5
+  }, opts);
+
+  var sizes = []
+
+  // Create an array containing each size.
+  for (var i = -opts.smaller; i <= opts.larger; i++) {
+    sizes.push(i)
+  }
+
+  return sizes;
+}
