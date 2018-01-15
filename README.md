@@ -33,7 +33,7 @@ const typefaces = [
     fontFamilyFallbacks: ['Times', 'Times New Roman'],
     fontFamilyGeneric: 'serif',
     fontSizeAdjustment: 1.00,
-    lineHeightAdjustment': 1.00
+    lineHeightAdjustment: 1.00
   },
   {
     name: 'display',
