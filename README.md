@@ -32,7 +32,7 @@ const typefaces = [
     fontFamily: 'Georgia',
     fontFamilyFallbacks: ['Times', 'Times New Roman'],
     fontFamilyGeneric: 'serif',
-    fontSizeAdjustment': 1.00,
+    fontSizeAdjustment: 1.00,
     lineHeightAdjustment': 1.00
   },
   {
