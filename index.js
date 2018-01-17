@@ -88,18 +88,24 @@ function Typography(opts) {
 
   _.each(typefaces, function (typeface) {
 
+    // Create typeface tokens
+
     var fontStack = []
+
     fontStack.push(typeface.fontFamily)
     fontStack = fontStack.concat(typeface.fontFamilyFallbacks) 
     fontStack.push(typeface.fontFamilyGeneric)
 
-
     metrics.tokens.props[changeCase.constantCase('typeface ' + typeface.name)] = {
-      value: String(fontStack)
+      "value": String(fontStack),
+      "type": "string",
+      "category": "font-family"
     }
 
     _.each(scales, function (scale) {
     _.each(sizes, function (size) {
+
+        // Create font size and line height tokens
       
         var theseMetrics = Metrics(scale, typeface, size)
         var prefix = changeCase.constantCase('type size') + '_' + size + '_' + changeCase.constantCase(typeface.name + ' '  + scale.name)
