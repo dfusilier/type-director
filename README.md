@@ -77,14 +77,12 @@ const scales = [
     fontSize: {
       base: 16,
       max: 28,
-      unit: 'px',
-      precision: 0.1
+      unit: 'px'
     },
     lineHeight: {
       base: 1.45,
       max: 1.35,
-      unit: '',
-      precision: 0.1
+      unit: ''
     }
   },
   {
@@ -92,14 +90,12 @@ const scales = [
     fontSize: {
       base: 18,
       max: 42,
-      unit: 'px',
-      precision: 0.1
+      unit: 'px'
     },
     lineHeight: {
       base: 1.4,
       max: 1.25,
-      unit: '',
-      precision: 0.01
+      unit: ''
     }
   }
 ]
@@ -141,18 +137,16 @@ const scales = [
       base: 16,
       max: 28,
       unit: 'px',
-      precision: 0.1,
-      font-size-precision: 0.1,
-      line-height-precision: 0.01
+      precision: 0.1
     },
     lineHeight: {
       base: 1.45,
       max: 1.35,
       unit: '',
-      precision: 0.1
+      precision: 0.01
     }
   },
-  ... 
+  ...
 ]
 ```
 
