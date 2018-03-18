@@ -1,7 +1,7 @@
 
 # Type Director
 
-Type Director generates a responsive, modular, nuanced typographic system from only a few key variables.
+Type Director generates a responsive, modular, nuanced typographic system from only a few key variables. Metrics are exported as json and cross-platform Theo tokens.
 
 
 
@@ -21,35 +21,38 @@ Type Director generates a responsive, modular, nuanced typographic system from o
 
 ## Usage
 
-### Declare your typefaces
+### Defining typefaces
 
-Typefaces associate a font-family with various typeface-specific adjustments. Specify your typefaces like so:
+Easily apply various typeface-specific adjustments: 
 
 ```js
 const typefaces = [
   {
-    name: 'default',
+    name: 'georgia',
     fontFamily: 'Georgia',
-    fontFamilyFallbacks: ['Times', 'Times New Roman'],
+    fontFamilyFallbacks: ['Times', 'Times New Roman'], 
     fontFamilyGeneric: 'serif',
     fontSizeAdjustment: 1.00,
-    lineHeightAdjustment: 1.00
+    lineHeightAdjustment: 1.00,
+    uppercaseAdjustment: 0.82
   },
   {
-    name: 'display',
+    name: 'verdana',
     fontFamily: 'Verdana',
-    fontFamilyFallbacks: ['Helvetica', 'Helvetica Neue'],
+    fontFamilyFallbacks: [],
     fontFamilyGeneric: 'sans-serif',
     fontSizeAdjustment: 0.89,
-    lineHeightAdjustment: 0.94
+    lineHeightAdjustment: 0.94,
+    uppercaseAdjustment: 0.85
   },
   {
-    name: 'code',
-    fontFamily: 'Monaco',
-    fontFamilyFallbacks: ['Courier'],
+    name: 'menlo',
+    fontFamily: 'Menlo',
+    fontFamilyFallbacks: ['Consolas'],
     fontFamilyGeneric: 'monospace',
-    fontSizeAdjustment: 0.89,
-    lineHeightAdjustment: 0.94
+    fontSizeAdjustment: 1.00,
+    lineHeightAdjustment: 1.00,
+    uppercaseAdjustment: 0.85
   }
 ]
 
@@ -57,15 +60,14 @@ const typefaces = [
 
 Oftentimes two typfaces set to the same font-size do not appear to be. This is because the heights of their lowercase letters are not equal. Use the `fontSizeAdjustment` property to normalize additional typefaces to the default typeface, ensuring they align to the modular scale.
 
-For example, Verdana appears 11% larger than Georgia. To normalize it with Georgia, we can set a `fontSizeAdjustment: 0.89`. This will cause Verdana to be 11% smaller than Georgia when set to the same size.
+For example, Verdana appears 11% larger than Georgia. To normalize it with Georgia, we can set a `fontSizeAdjustment: 0.89`. This will cause Verdana to be 11% smaller than Georgia when set to the same "size".
 
 Similarly, you can also apply an adjustment to line-height on a typeface-by-typeface basis by specifying a `lineHeightAdjustment`.
 
 
+### Define your modular scales
 
-### Declare your environments
-
-Environments associate a media query with a modular type scale. Specify your environments like so:
+Easily create a modular scales that adapt to each environment:
 
 ```js
 
@@ -87,7 +89,6 @@ const scales = [
   },
   {
     name: 'tablet',
-    mediaQuery: 'screen and (min-width: 768px)',
     fontSize: {
       base: 18,
       max: 42,
@@ -103,9 +104,7 @@ const scales = [
   }
 ]
 ```
-For each scale, you'll need to provide a font size and line height for both your base size and max size. The other sizes will be interpolated from these constraints.
-
-A `mediaQuery` property should also be set for each environment, except for the environment you'd like to be default.
+For each scale, provide a font size and line height for both your base size and max size. The other sizes will be interpolated from these constraints.
 
 
 
@@ -114,7 +113,7 @@ A `mediaQuery` property should also be set for each environment, except for the 
 ```js
 const typography = TypeDirector({
   typefaces: typefaces,
-  environments: environments,
+  scales: scales,
   sizes: {
     smaller: 1,
     larger: 3
@@ -126,3 +125,43 @@ That's it! The returned object will include Theo tokens for font size, line heig
 
 If you need a bit of typographic guidance, [Responsive Typography: The Basics](https://ia.net/know-how/responsive-typography-the-basics 'Responsive Typography: The Basics') by Information Architects is an excellent read.
 
+
+## Advanced Usage
+
+### Rounding 
+
+Rounding to any precision is supported. 
+
+```js
+
+const scales = [ 
+  {
+    name: 'phone',
+    fontSize: {
+      base: 16,
+      max: 28,
+      unit: 'px',
+      precision: 0.1,
+      font-size-precision: 0.1,
+      line-height-precision: 0.01
+    },
+    lineHeight: {
+      base: 1.45,
+      max: 1.35,
+      unit: '',
+      precision: 0.1
+    }
+  },
+  ... 
+]
+```
+
+### Tight line-heights
+
+Oftentimes you may need to set very narrow lines of text, causing your line-height to look too loose. For a tighter line-height, use the `"line-height": "tight"` option.
+
+```scss
+.caption-tight { 
+  @include td-responsive-type-size("verdana", -1, $opts: ("line-height": "tight"));
+}
+```
