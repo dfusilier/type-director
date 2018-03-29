@@ -46,7 +46,7 @@ var opts = {
       fontSize: {
         base: 14,
         max: 36,
-        precision: 0.01,
+        precision: 0.1,
         unit: 'px',
       },
       lineHeight: {

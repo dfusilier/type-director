@@ -23,11 +23,25 @@ function Metrics(environment, typeface, size) {
     return value * typeface.fontSizeAdjustment;
   }
 
+  var adjustUppercaseFontSize = function (value) {
+    return value * typeface.fontSizeAdjustment * typeface.uppercaseAdjustment;
+  }
+
   // Adjust a line height. When line heights are ratios, the 
   // font size and its adjustments must be taken into account.
   var adjustLineHeight = function (value) {
     if(!environment.lineHeight.unit) {
       return value * typeface.lineHeightAdjustment / typeface.fontSizeAdjustment;
+    } else {
+      return value * typeface.lineHeightAdjustment;
+    }
+  }  
+
+  // Adjust a line height. When line heights are ratios, the 
+  // font size and its adjustments must be taken into account.
+  var adjustUppercaseLineHeight = function (value) {
+    if(!environment.lineHeight.unit) {
+      return value * typeface.lineHeightAdjustment / (typeface.fontSizeAdjustment * typeface.uppercaseAdjustment);
     } else {
       return value * typeface.lineHeightAdjustment;
     }
@@ -55,11 +69,17 @@ function Metrics(environment, typeface, size) {
   fontSize = adjustFontSize(fontSize);
   lineHeight = adjustLineHeight(lineHeight);
   lineHeightTight = adjustLineHeight(lineHeightTight);
+  uppercaseFontSize = adjustUppercaseFontSize(fontSize);
+  uppercaseLineHeight = adjustUppercaseLineHeight(lineHeight);
+  uppercaseLineHeightTight = adjustUppercaseLineHeight(lineHeightTight);
 
   return {
     fontSize: prepValue(fontSize, environment.fontSize.precision, environment.fontSize.unit),
     lineHeight: prepValue(lineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
     lineHeightTight: prepValue(lineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
+    uppercaseFontSize: prepValue(uppercaseFontSize, environment.fontSize.precision, environment.fontSize.unit),
+    uppercaseLineHeight: prepValue(uppercaseLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
+    uppercaseLineHeightTight: prepValue(uppercaseLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
   }
 }
 

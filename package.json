@@ -1,6 +1,6 @@
 {
   "name": "type-director",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Type Director generates a responsive, modular, nuanced typographic system from only a few key variables.",
   "main": "index.js",
   "scripts": {

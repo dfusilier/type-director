@@ -106,13 +106,15 @@ function Typography(opts) {
     _.each(sizes, function (size) {
 
         // Create font size and line height tokens
-      
         var theseMetrics = Metrics(scale, typeface, size)
         var prefix = changeCase.constantCase('type size') + '_' + size + '_' + changeCase.constantCase(typeface.name + ' '  + scale.name)
 
         metrics.tokens.props[prefix + '_FONT_SIZE'] = fontSizeToken(theseMetrics.fontSize)
         metrics.tokens.props[prefix + '_LINE_HEIGHT'] = lineHeightToken(theseMetrics.lineHeight)
         metrics.tokens.props[prefix + '_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.lineHeightTight)
+        metrics.tokens.props[prefix + '_UPPERCASE_FONT_SIZE'] = fontSizeToken(theseMetrics.uppercaseFontSize)
+        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeight)
+        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeightTight)
       })
     })
   })
