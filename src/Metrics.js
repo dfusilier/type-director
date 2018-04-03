@@ -6,17 +6,17 @@ var _ = require('underscore');
 
 function Metrics(environment, typeface, size) {
 
+  // Calculate a metric on a modular scale
+  var calcModularSize = function (base, ratio, size) {
+    return base * Math.pow(ratio, size);
+  }
+
   var fontSize = calcModularSize(environment.fontSize.base, environment.fontSize.ratio, size);
   var lineHeight = calcModularSize(environment.lineHeight.base, environment.lineHeight.ratio, size);
 
   // Additionally, create a tigher line height halfway between normal
   // line height and 'set solid' (meaning, 1.0 or 14px over 14px)
   var lineHeightTight = ((lineHeight - 1.0) / 2) + 1;
-
-  // Calculate a metric on a modular scale
-  function calcModularSize(base, ratio, size) {
-    return base * Math.pow(ratio, size);
-  }
 
   // Adjust a font size
   var adjustFontSize = function (value) {
@@ -48,7 +48,7 @@ function Metrics(environment, typeface, size) {
   }
 
   // Round the value to a given increment
-  function round(val, precision) {
+  var round = function (val, precision) {
     var result = Math.round(val / precision) * precision;
 
     // floating point does weird stuff in js. fixed like so:
@@ -66,20 +66,20 @@ function Metrics(environment, typeface, size) {
     return result;
   }  
 
-  fontSize = adjustFontSize(fontSize);
-  lineHeight = adjustLineHeight(lineHeight);
-  lineHeightTight = adjustLineHeight(lineHeightTight);
-  uppercaseFontSize = adjustUppercaseFontSize(fontSize);
-  uppercaseLineHeight = adjustUppercaseLineHeight(lineHeight);
-  uppercaseLineHeightTight = adjustUppercaseLineHeight(lineHeightTight);
+  adjustedFontSize = adjustFontSize(fontSize);
+  adjustedLineHeight = adjustLineHeight(lineHeight);
+  adjustedLineHeightTight = adjustLineHeight(lineHeightTight);
+  adjustedUppercaseFontSize = adjustUppercaseFontSize(fontSize);
+  adjustedUppercaseLineHeight = adjustUppercaseLineHeight(lineHeight);
+  adjustedUppercaseLineHeightTight = adjustUppercaseLineHeight(lineHeightTight);
 
   return {
-    fontSize: prepValue(fontSize, environment.fontSize.precision, environment.fontSize.unit),
-    lineHeight: prepValue(lineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
-    lineHeightTight: prepValue(lineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
-    uppercaseFontSize: prepValue(uppercaseFontSize, environment.fontSize.precision, environment.fontSize.unit),
-    uppercaseLineHeight: prepValue(uppercaseLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
-    uppercaseLineHeightTight: prepValue(uppercaseLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
+    fontSize: prepValue(adjustedFontSize, environment.fontSize.precision, environment.fontSize.unit),
+    lineHeight: prepValue(adjustedLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
+    lineHeightTight: prepValue(adjustedLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
+    uppercaseFontSize: prepValue(adjustedUppercaseFontSize, environment.fontSize.precision, environment.fontSize.unit),
+    uppercaseLineHeight: prepValue(adjustedUppercaseLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
+    uppercaseLineHeightTight: prepValue(adjustedUppercaseLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
   }
 }
 

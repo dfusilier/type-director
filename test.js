@@ -12,7 +12,7 @@ var opts = {
       fontFamilyGeneric: 'serif',
       fontSizeAdjustment: 1.00,
       lineHeightAdjustment: 1.00,
-      uppercaseAdjustment: 0.82
+      uppercaseAdjustment: 1.00
     },
     {
       name: 'verdana',
@@ -21,16 +21,16 @@ var opts = {
       fontFamilyGeneric: 'sans-serif',
       fontSizeAdjustment: 0.89,
       lineHeightAdjustment: 0.94,
-      uppercaseAdjustment: 0.85
+      uppercaseAdjustment: 1.00
     },
     {
       name: 'menlo',
       fontFamily: 'Menlo',
       fontFamilyFallbacks: ['Consolas'],
       fontFamilyGeneric: 'monospace',
-      fontSizeAdjustment: 1.00,
+      fontSizeAdjustment: .90,
       lineHeightAdjustment: 1.00,
-      uppercaseAdjustment: 0.85
+      uppercaseAdjustment: 1.00
     }
   ],
 
