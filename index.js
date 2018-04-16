@@ -73,16 +73,19 @@ function Typography(opts) {
   var fontSizeToken = (value) => {
     return {
       "value": value,
-      "type": "size",
+      "type": "font-size",
       "category": "font-size"
     }
   }
 
-  var lineHeightToken = (value) => {
+  var lineHeightToken = (value, fontSize) => {
     return {
       "value": value,
-      "type": "size",
-      "category": "line-height"
+      "type": "line-height",
+      "category": "line-height",
+      "meta": {
+        "font-size": fontSize
+      }
     }
   }
 
@@ -110,11 +113,11 @@ function Typography(opts) {
         var prefix = changeCase.constantCase('type size') + '_' + size + '_' + changeCase.constantCase(typeface.name + ' '  + scale.name)
 
         metrics.tokens.props[prefix + '_FONT_SIZE'] = fontSizeToken(theseMetrics.fontSize)
-        metrics.tokens.props[prefix + '_LINE_HEIGHT'] = lineHeightToken(theseMetrics.lineHeight)
-        metrics.tokens.props[prefix + '_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.lineHeightTight)
+        metrics.tokens.props[prefix + '_LINE_HEIGHT'] = lineHeightToken(theseMetrics.lineHeight, theseMetrics.fontSize)
+        metrics.tokens.props[prefix + '_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.lineHeightTight, theseMetrics.fontSize)
         metrics.tokens.props[prefix + '_UPPERCASE_FONT_SIZE'] = fontSizeToken(theseMetrics.uppercaseFontSize)
-        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeight)
-        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeightTight)
+        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeight, theseMetrics.uppercaseFontSize)
+        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeightTight, theseMetrics.uppercaseFontSize)
       })
     })
   })
