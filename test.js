@@ -39,7 +39,7 @@ var opts = {
     larger: 3
   },
 
-  scales: [{},
+  scales: [
     {
       name: 'phone',
       mediaQuery: '',
@@ -79,19 +79,19 @@ var Typography = require('./index.js')
 var typography = Typography(opts);
 
 // Pretty format json
-console.log(JSON.stringify(typography, null, 4));
+// console.log(JSON.stringify(typography, null, 4));
 
 
 
-// const output = theo.convert({
-//   transform: {
-//     type: 'web',
-//     file: 'package.json',
-//     data: JSON.stringify(typography.tokens)
-//   },
-//   format: {
-//     type: 'scss'
-//   }
-// });
+const output = theo.convert({
+  transform: {
+    type: 'web',
+    file: 'package.json',
+    data: JSON.stringify(typography.metrics.tokens)
+  },
+  format: {
+    type: 'scss'
+  }
+});
 
-// console.log(output);
+console.log(output);
