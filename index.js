@@ -7,17 +7,20 @@ var Typeface = require('./src/Typeface.js');
 var Scale = require('./src/Scale.js');
 var Sizes = require('./src/Sizes.js');
 var Metrics = require('./src/Metrics.js');
+var convertTokens = require('./src/convertTokens.js');
 
 
 function Typography(opts) {
 
-  var typefaces = opts.typefaces;
+  var typefaces = [];
   var scales = [];
   var sizes = [];
   var metrics = {
     flat: [],
     nested: {},
-    tokens: { props: {} }
+    tokens: { 
+      props: [] 
+    }
   };
 
   // Apply defaults, calculate ratio or max
@@ -70,21 +73,23 @@ function Typography(opts) {
 
   // Theo Design Tokens
 
-  var fontSizeToken = (value) => {
+  var fontSizeToken = (name, value) => {
     return {
+      "name": name,
       "value": value,
       "type": "font-size",
       "category": "font-size"
     }
   }
 
-  var lineHeightToken = (value, fontSize) => {
+  var lineHeightToken = (name, value, fontSize) => {
     return {
+      "name": name,
       "value": value,
       "type": "line-height",
       "category": "line-height",
       "meta": {
-        "font-size": fontSize
+        "fontSize": fontSize
       }
     }
   }
@@ -95,29 +100,42 @@ function Typography(opts) {
 
     var fontStack = []
 
+    // Merge font, font fallbacks, and font generic 
+    // into font stack
     fontStack.push(typeface.fontFamily)
     fontStack = fontStack.concat(typeface.fontFamilyFallbacks) 
     fontStack.push(typeface.fontFamilyGeneric)
 
-    metrics.tokens.props[changeCase.constantCase('typeface ' + typeface.name)] = {
+    metrics.tokens.props.push({
+      "name": changeCase.constantCase('typeface ' + typeface.name),
       "value": String(fontStack),
       "type": "string",
       "category": "font-family"
-    }
+    })
 
     _.each(scales, function (scale) {
-    _.each(sizes, function (size) {
+      _.each(sizes, function (size) {
+
+        // Append plus or minus to sizes. Necessary bc
+        // case conversion doesnt handle neg signs well.
+        var sizeString = function (size) {
+          if (size === 0) { return size; } 
+          else if (size > 0) { return `${size}` } 
+          else { return `minus ${size}` }
+        } 
 
         // Create font size and line height tokens
         var theseMetrics = Metrics(scale, typeface, size)
-        var prefix = changeCase.constantCase('type size') + '_' + size + '_' + changeCase.constantCase(typeface.name + ' '  + scale.name)
+        var prefix = changeCase.constantCase(`type size ${sizeString(size)} ${typeface.name} ${scale.name}`)
 
-        metrics.tokens.props[prefix + '_FONT_SIZE'] = fontSizeToken(theseMetrics.fontSize)
-        metrics.tokens.props[prefix + '_LINE_HEIGHT'] = lineHeightToken(theseMetrics.lineHeight, theseMetrics.fontSize)
-        metrics.tokens.props[prefix + '_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.lineHeightTight, theseMetrics.fontSize)
-        metrics.tokens.props[prefix + '_UPPERCASE_FONT_SIZE'] = fontSizeToken(theseMetrics.uppercaseFontSize)
-        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeight, theseMetrics.uppercaseFontSize)
-        metrics.tokens.props[prefix + '_UPPERCASE_LINE_HEIGHT_TIGHT'] = lineHeightToken(theseMetrics.uppercaseLineHeightTight, theseMetrics.uppercaseFontSize)
+        metrics.tokens.props.push(
+          fontSizeToken(prefix + '_FONT_SIZE', theseMetrics.fontSize),
+          lineHeightToken(prefix + '_LINE_HEIGHT', theseMetrics.lineHeight, theseMetrics.fontSize),
+          lineHeightToken(prefix + '_LINE_HEIGHT_TIGHT', theseMetrics.lineHeightTight, theseMetrics.fontSize),
+          fontSizeToken(prefix + '_UPPERCASE_FONT_SIZE', theseMetrics.uppercaseFontSize),
+          lineHeightToken(prefix + '_UPPERCASE_LINE_HEIGHT', theseMetrics.uppercaseLineHeight, theseMetrics.uppercaseFontSize),
+          lineHeightToken(prefix + '_UPPERCASE_LINE_HEIGHT_TIGHT', theseMetrics.uppercaseLineHeightTight, theseMetrics.uppercaseFontSize)
+        )
       })
     })
   })
@@ -126,7 +144,10 @@ function Typography(opts) {
     typefaces: opts.typefaces,
     scales: scales,
     sizes: sizes,
-    metrics: metrics
+    metrics: metrics,
+    convertTokens: function () {
+      return convertTokens(this.metrics.tokens)
+    }
   }
 }
 

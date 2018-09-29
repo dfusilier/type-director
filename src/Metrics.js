@@ -1,18 +1,17 @@
-exports = module.exports = Metrics;
-
 var _ = require('underscore');
+var round = require('./utils/round');
 
 
-
-function Metrics(environment, typeface, size) {
+exports = module.exports = function (scale, typeface, size) {
 
   // Calculate a metric on a modular scale
   var calcModularSize = function (base, ratio, size) {
     return base * Math.pow(ratio, size);
   }
 
-  var fontSize = calcModularSize(environment.fontSize.base, environment.fontSize.ratio, size);
-  var lineHeight = calcModularSize(environment.lineHeight.base, environment.lineHeight.ratio, size);
+  var fontSize = calcModularSize(scale.fontSize.base, scale.fontSize.ratio, size);
+  var lineHeight = calcModularSize(scale.lineHeight.base, scale.lineHeight.ratio, size);
+
 
   // Additionally, create a tigher line height halfway between normal
   // line height and 'set solid' (meaning, 1.0 or 14px over 14px)
@@ -30,7 +29,7 @@ function Metrics(environment, typeface, size) {
   // Adjust a line height. When line heights are ratios, the 
   // font size and its adjustments must be taken into account.
   var adjustLineHeight = function (value) {
-    if(!environment.lineHeight.unit) {
+    if(!scale.lineHeight.unit) {
       return value * typeface.lineHeightAdjustment / typeface.fontSizeAdjustment;
     } else {
       return value * typeface.lineHeightAdjustment;
@@ -40,30 +39,21 @@ function Metrics(environment, typeface, size) {
   // Adjust a line height. When line heights are ratios, the 
   // font size and its adjustments must be taken into account.
   var adjustUppercaseLineHeight = function (value) {
-    if(!environment.lineHeight.unit) {
+    if(!scale.lineHeight.unit) {
       return value * typeface.lineHeightAdjustment / (typeface.fontSizeAdjustment * typeface.uppercaseAdjustment);
     } else {
       return value * typeface.lineHeightAdjustment;
     }
   }
 
-  // Round the value to a given increment
-  var round = function (val, precision) {
-    var result = Math.round(val / precision) * precision;
-
-    // floating point does weird stuff in js. fixed like so:
-    var decimalPlaces = precision.toString().split('.')[1].length;
-    result = result.toFixed(decimalPlaces);
-
-    return result;
-  }
-
   // Rounds value to appropriate precision and appends unit
   var prepValue = function (val, precision, unit) {
-    var result = val;
-    result = precision ? round(result, precision) : result;
-    result = unit ? result + unit : result;
-    return result;
+    var result = round(val, precision);
+    if (!result) { 
+      return result;
+    } else {
+      return unit ? result + unit : result;
+    }
   }  
 
   adjustedFontSize = adjustFontSize(fontSize);
@@ -74,12 +64,12 @@ function Metrics(environment, typeface, size) {
   adjustedUppercaseLineHeightTight = adjustUppercaseLineHeight(lineHeightTight);
 
   return {
-    fontSize: prepValue(adjustedFontSize, environment.fontSize.precision, environment.fontSize.unit),
-    lineHeight: prepValue(adjustedLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
-    lineHeightTight: prepValue(adjustedLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
-    uppercaseFontSize: prepValue(adjustedUppercaseFontSize, environment.fontSize.precision, environment.fontSize.unit),
-    uppercaseLineHeight: prepValue(adjustedUppercaseLineHeight, environment.lineHeight.precision, environment.lineHeight.unit),
-    uppercaseLineHeightTight: prepValue(adjustedUppercaseLineHeightTight, environment.lineHeight.precision, environment.lineHeight.unit),
+    fontSize: prepValue(adjustedFontSize, scale.fontSize.precision, scale.fontSize.unit),
+    lineHeight: prepValue(adjustedLineHeight, scale.lineHeight.precision, scale.lineHeight.unit),
+    lineHeightTight: prepValue(adjustedLineHeightTight, scale.lineHeight.precision, scale.lineHeight.unit),
+    uppercaseFontSize: prepValue(adjustedUppercaseFontSize, scale.fontSize.precision, scale.fontSize.unit),
+    uppercaseLineHeight: prepValue(adjustedUppercaseLineHeight, scale.lineHeight.precision, scale.lineHeight.unit),
+    uppercaseLineHeightTight: prepValue(adjustedUppercaseLineHeightTight, scale.lineHeight.precision, scale.lineHeight.unit),
   }
 }
 

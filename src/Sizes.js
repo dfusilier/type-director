@@ -1,10 +1,7 @@
-exports = module.exports = Sizes;
-
 var _ = require('underscore');
 
 
-
-function Sizes(opts) {
+exports = module.exports = function (opts) {
 
   opts = _.extend({
     smaller: 1,

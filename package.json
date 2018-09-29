@@ -1,18 +1,19 @@
 {
   "name": "type-director",
-  "version": "0.2.8",
+  "version": "0.2.10",
   "description": "Type Director generates a responsive, modular, nuanced typographic system from only a few key variables.",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "mocha tests --recursive"
   },
   "author": "David Fusilier",
   "license": "ISC",
   "devDependencies": {
-    "theo": "^6.0.0-beta.9"
+    "mocha": "^5.1.1"
   },
   "dependencies": {
     "change-case": "^3.0.1",
+    "theo": "^7.0.1",
     "underscore": "^1.8.3"
   }
 }

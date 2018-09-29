@@ -1,19 +1,16 @@
-exports = module.exports = Typeface;
-
 var _ = require('underscore');
 
 
-
-function Typeface(opts) {
+exports = module.exports = function (opts) {
 
   opts = _.extend({
-    name: "new",
-    fontFamily: "Times",
+    name: 'new',
+    fontFamily: 'Times',
     fontFamilyFallbacks: [],
     fontFamilyGeneric: 'serif',
     fontSizeAdjustment: 1.00,
     lineHeightAdjustment: 1.00,
-    uppercaseAdjustment: 0.8
+    uppercaseAdjustment: 1.00
   }, opts);
 
   return opts;
